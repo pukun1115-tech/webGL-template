@@ -74,7 +74,7 @@ export class Mat4 {
         out[4] = m4 * cos + m8 * sin;
         out[5] = m5 * cos + m9 * sin;
         out[6] = m6 * cos + m10 * sin;
-        out[7] = m7 * cos - m11 * sin;
+        out[7] = m7 * cos + m11 * sin;
 
         out[8] = m4 * -sin + m8 * cos;
         out[9] = m5 * -sin + m9 * cos;
