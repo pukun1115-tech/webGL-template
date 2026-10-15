@@ -18,4 +18,25 @@ export class Mat4 {
 
         return out;
     }
+
+    static scale(mat, x, y, z) {
+        const out = new Float32Array(mat);
+
+        out[0] = mat[0] * x;
+        out[1] = mat[1] * x;
+        out[2] = mat[2] * x;
+        out[3] = mat[3] * x;
+
+        out[4] = mat[4] * y;
+        out[5] = mat[5] * y;
+        out[6] = mat[6] * y;
+        out[7] = mat[7] * y;
+
+        out[8] = mat[8] * z;
+        out[9] = mat[9] * z;
+        out[10] = mat[10] * z;
+        out[11] = mat[11] * z;
+
+        return out;
+    }
 }
