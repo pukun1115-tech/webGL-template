@@ -35,6 +35,10 @@ function create_shader(s, type) {
         return null;
     }
 
+    if (shader === null) {
+        return null;
+    }
+
     gl.shaderSource(shader, s);
     gl.compileShader(shader);
 
@@ -57,6 +61,9 @@ function create_program(vertexShader, fragmentShader) {
      * @type {WebGLProgram | null}
      */
     const program = gl.createProgram();
+    if (program === null) {
+        return null;
+    }
 
     gl.attachShader(program, vertexShader);
     gl.attachShader(program, fragmentShader);
