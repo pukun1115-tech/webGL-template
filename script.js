@@ -1,2 +1,94 @@
+/**
+ * @type {HTMLCanvasElement | null}
+ */
 const canvas = document.getElementById("canvas");
+
+canvas.width = 300;
+canvas.height = 300;
+
+/**
+ * @type {WebGLRenderingContext | null}
+ */
 const gl = canvas.getContext("webgl");
+
+gl.clearDepth(1.0);
+gl.clearColor(0.0, 0.0, 0.0, 1.0);
+
+gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+/**
+ * @param {string} s 
+ * @param {string} type 
+ * @returns {WebGLShader | null}
+ */
+function create_shader(s, type) {
+    /**
+     * @type {WebGLShader | null}
+     */
+    let shader = null;
+
+    if (type === "vertex") {
+        shader = gl.createShader(gl.VERTEX_SHADER);
+    } else if (type === "fragment") {
+        shader = gl.createShader(gl.FRAGMENT_SHADER);
+    } else {
+        return null;
+    }
+
+    gl.shaderSource(shader, s);
+    gl.compileShader(shader);
+
+    if (gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+        return shader;
+    } else {
+        alert(gl.getShaderInfoLog(shader));
+        return null;
+    }
+}
+
+/**
+ * 
+ * @param {WebGLShader} vertexShader 
+ * @param {WebGLShader} fragmentShader 
+ * @returns {WebGLProgram | null}
+ */
+function create_program(vertexShader, fragmentShader) {
+    /**
+     * @type {WebGLProgram | null}
+     */
+    const program = gl.createProgram();
+
+    gl.attachShader(program, vertexShader);
+    gl.attachShader(program, fragmentShader);
+
+    gl.linkProgram(program);
+
+    if (gl.getProgramParameter(program, gl.LINK_STATUS)) {
+        gl.useProgram(program);
+        return program;
+    } else {
+        alert(gl.getProgramInfoLog(program));
+        return null;
+    }
+}
+
+/**
+ * 
+ * @param {Array<number> | Float32Array} data 
+ * @returns {WebGLBuffer | null}
+ */
+function create_vbo(data) {
+    /**
+     * @type {WebGLBuffer | null}
+     */
+    const vbo = gl.createBuffer();
+    if (vbo === null) {
+        return null;
+    }
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(data), gl.STATIC_DRAW);
+    gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+    return vbo;
+}
