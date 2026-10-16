@@ -45,18 +45,17 @@ function create_shader(s, type) {
     if (gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
         return shader;
     } else {
-        alert(gl.getShaderInfoLog(shader));
+        console.error(gl.getShaderInfoLog(shader));
         return null;
     }
 }
 
-/**
- * 
- * @param {WebGLShader} vertexShader 
- * @param {WebGLShader} fragmentShader 
+/* 
+ * @param {WebGLShader} vs 
+ * @param {WebGLShader} fs 
  * @returns {WebGLProgram | null}
  */
-function create_program(vertexShader, fragmentShader) {
+function create_program(vs, fs) {
     /**
      * @type {WebGLProgram | null}
      */
@@ -65,8 +64,8 @@ function create_program(vertexShader, fragmentShader) {
         return null;
     }
 
-    gl.attachShader(program, vertexShader);
-    gl.attachShader(program, fragmentShader);
+    gl.attachShader(program, vs);
+    gl.attachShader(program, fs);
 
     gl.linkProgram(program);
 
@@ -74,13 +73,12 @@ function create_program(vertexShader, fragmentShader) {
         gl.useProgram(program);
         return program;
     } else {
-        alert(gl.getProgramInfoLog(program));
+        console.error(gl.getProgramInfoLog(program));
         return null;
     }
 }
 
 /**
- * 
  * @param {Array<number> | Float32Array} data 
  * @returns {WebGLBuffer | null}
  */
