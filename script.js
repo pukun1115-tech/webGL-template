@@ -17,8 +17,8 @@ gl.clearColor(0.0, 0.0, 0.0, 1.0);
 gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
 /**
- * @param {string} s 
- * @param {string} type 
+ * @param {string} s
+ * @param {string} type
  * @returns {WebGLShader | null}
  */
 function create_shader(s, type) {
@@ -51,8 +51,8 @@ function create_shader(s, type) {
 }
 
 /* 
- * @param {WebGLShader} vs 
- * @param {WebGLShader} fs 
+ * @param {WebGLShader} vs
+ * @param {WebGLShader} fs
  * @returns {WebGLProgram | null}
  */
 function create_program(vs, fs) {
@@ -79,7 +79,7 @@ function create_program(vs, fs) {
 }
 
 /**
- * @param {Array<number> | Float32Array} data 
+ * @param {Array<number> | Float32Array} data
  * @returns {WebGLBuffer | null}
  */
 function create_vbo(data) {
@@ -97,3 +97,15 @@ function create_vbo(data) {
 
     return vbo;
 }
+
+/**
+ * @type {string}
+ */
+const vertexShader = `
+`;
+
+/**
+ * @type {string}
+ */
+const fragmentShader = `
+`;
