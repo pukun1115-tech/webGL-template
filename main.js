@@ -1,8 +1,11 @@
+import { vertex_shader, fragment_shader } from "./shader.js";
 /**
  * @type {HTMLCanvasElement | null}
  */
 const canvas = document.getElementById("canvas");
-
+if (canvas === null) {
+    throw new Error("canvas");
+}
 canvas.width = 300;
 canvas.height = 300;
 
@@ -10,7 +13,9 @@ canvas.height = 300;
  * @type {WebGLRenderingContext | null}
  */
 const gl = canvas.getContext("webgl");
-
+if (gl === null) {
+    throw new Error("gl");
+}
 gl.clearDepth(1.0);
 gl.clearColor(0.0, 0.0, 0.0, 1.0);
 
@@ -97,15 +102,3 @@ function create_vbo(data) {
 
     return vbo;
 }
-
-/**
- * @type {string}
- */
-const vertexShader = `
-`;
-
-/**
- * @type {string}
- */
-const fragmentShader = `
-`;
