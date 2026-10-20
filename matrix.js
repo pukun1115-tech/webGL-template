@@ -1,4 +1,7 @@
 export class Mat4 {
+    /**
+     * @returns {Float32Array}
+     **/
     static create() {
         return new Float32Array([
             1, 0, 0, 0,
