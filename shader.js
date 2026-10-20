@@ -1,16 +1,16 @@
 /**
  * @type {string}
  */
-export const vertex_shader = `
+export const vertex_shader_source = `
     attribute vec3 position;
     attribute vec4 color;
 
     uniform mat4 matrix;
 
-    varying vec4 vcolor;
+    varying vec4 vColor;
 
-    void main() {
-        vcolor = color;
+    void main(void) {
+        vColor = color;
         gl_Position = matrix * vec4(position, 1.0);
     }
 `;
@@ -18,12 +18,12 @@ export const vertex_shader = `
 /**
  * @type {string}
  */
-export const fragment_shader = `
+export const fragment_shader_source = `
     precision mediump float;
 
-    varying vec4 vcolor;
+    varying vec4 vColor;
 
-    void main() {
-        gl_FragColor = vcolor;
+    void main(void) {
+        gl_FragColor = vColor;
     }
 `;
