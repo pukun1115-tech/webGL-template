@@ -1,4 +1,5 @@
 import { vertex_shader, fragment_shader } from "./shader.js";
+import { Mat4 } from "./matrix.js";
 /**
  * @type {HTMLCanvasElement | null}
  */
