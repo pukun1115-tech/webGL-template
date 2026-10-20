@@ -8,9 +8,7 @@ export class Mat4 {
         ]);
     }
 
-    static translate(mat, x, y, z) {
-        const out = new Float32Array(mat);
-
+    static translate(out, mat, x, y, z) {
         out[12] = mat[0] * x + mat[4] * y + mat[8] * z + mat[12];
         out[13] = mat[1] * x + mat[5] * y + mat[9] * z + mat[13];
         out[14] = mat[2] * x + mat[6] * y + mat[10] * z + mat[14];
@@ -19,9 +17,7 @@ export class Mat4 {
         return out;
     }
 
-    static scale(mat, x, y, z) {
-        const out = new Float32Array(mat);
-
+    static scale(out, mat, x, y, z) {
         out[0] = mat[0] * x;
         out[1] = mat[1] * x;
         out[2] = mat[2] * x;
@@ -40,9 +36,7 @@ export class Mat4 {
         return out;
     }
 
-    static rotateZ(mat, rad) {
-        const out = new Float32Array(mat);
-
+    static rotateZ(out, mat, rad) {
         const sin = Math.sin(rad);
         const cos = Math.cos(rad);
 
@@ -62,9 +56,7 @@ export class Mat4 {
         return out;
     }
 
-    static rotateX(mat, rad) {
-        const out = new Float32Array(mat);
-
+    static rotateX(out, mat, rad) {
         const sin = Math.sin(rad);
         const cos = Math.cos(rad);
 
@@ -84,8 +76,7 @@ export class Mat4 {
         return out;
     }
 
-    static rotateY(mat, rad) {
-        const out = new Float32Array(mat);
+    static rotateY(out, mat, rad) {
         const cos = Math.cos(rad);
         const sin = Math.sin(rad);
 
@@ -105,9 +96,7 @@ export class Mat4 {
         return out;
     }
 
-    static multiply(a, b) {
-        const out = new Float32Array(16);
-
+    static multiply(out, a, b) {
         out[0] = a[0] * b[0] + a[4] * b[1] + a[8] * b[2] + a[12] * b[3];
         out[1] = a[1] * b[0] + a[5] * b[1] + a[9] * b[2] + a[13] * b[3];
         out[2] = a[2] * b[0] + a[6] * b[1] + a[10] * b[2] + a[14] * b[3];
