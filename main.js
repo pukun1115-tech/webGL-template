@@ -140,11 +140,14 @@ function mainLoop(gl) {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     /** @type {Float32Array} */
-    let mMatrix = Mat4.create();
-    let vMatrix = Mat4.create();
-    let pMatrix = Mat4.create();
+    const mMatrix = Mat4.identity(Mat4.create());
+    /** @type {Float32Array} */
+    const vMatrix = Mat4.identity(Mat4.create());
+    /** @type {Float32Array} */
+    const pMatrix = Mat4.identity(Mat4.create());
 
-    const mvpMatrix = Mat4.create();
+    /** @type {Float32Array} **/
+    const mvpMatrix = Mat4.identity(Mat4.create());
 
     gl.uniformMatrix4fv(uniformLocations["matrix"], false, mvpMatrix);
 
@@ -153,4 +156,4 @@ function mainLoop(gl) {
     requestAnimationFrame(mainLoop);
 }
 
-mainLoop();
+mainLoop(gl);
