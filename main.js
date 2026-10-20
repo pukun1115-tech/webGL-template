@@ -3,11 +3,11 @@ import { Mat4 } from "./matrix.js";
 
 /**
  * @param {WebGLRenderingContext} gl
- * @param {string} s
- * @param {string} type
+ * @param {string} source
+ * @param {"vertex" | "fragment"} type
  * @returns {WebGLShader | null}
  */
-function create_shader(gl, s, type) {
+function create_shader(gl, source, type) {
     /** @type {WebGLShader | null} */
     let shader = null;
 
@@ -23,7 +23,7 @@ function create_shader(gl, s, type) {
         return null;
     }
 
-    gl.shaderSource(shader, s);
+    gl.shaderSource(shader, source);
     gl.compileShader(shader);
 
     if (gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
@@ -53,7 +53,6 @@ function create_program(gl, vs, fs) {
     gl.linkProgram(program);
 
     if (gl.getProgramParameter(program, gl.LINK_STATUS)) {
-        gl.useProgram(program);
         return program;
     } else {
         console.error(gl.getProgramInfoLog(program));
@@ -115,4 +114,15 @@ const program = create_program(gl, vertex_shader, fragment_shader);
 
 if (program === null) {
     throw new Error("create_program");
+}
+
+gl.useProgram(program);
+
+/** @type {Array<string>} */
+const attributeNames = ["position", "color"];
+/** @type {Record<string, number>} */
+const attributeLocations = {};
+
+for (const name of attributeNames) {
+    attributeLocations[name] = gl.getAttribLocation(program, name);
 }

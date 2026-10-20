@@ -1,6 +1,4 @@
-/**
- * @type {string}
- */
+/** @type {string} */
 export const vertex_shader_source = `
     attribute vec3 position;
     attribute vec4 color;
@@ -15,9 +13,7 @@ export const vertex_shader_source = `
     }
 `;
 
-/**
- * @type {string}
- */
+/** @type {string} */
 export const fragment_shader_source = `
     precision mediump float;
 
