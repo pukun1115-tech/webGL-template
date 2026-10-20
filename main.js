@@ -2,6 +2,7 @@ import { vertex_shader_source, fragment_shader_source } from "./shader.js";
 import { Mat4 } from "./matrix.js";
 
 /**
+ * @param {WebGLRenderingContext} gl
  * @param {string} s
  * @param {string} type
  * @returns {WebGLShader | null}
@@ -33,7 +34,8 @@ function create_shader(gl, s, type) {
     }
 }
 
-/* 
+/**
+ * @param {WebGLRenderingContext} gl
  * @param {WebGLShader} vs
  * @param {WebGLShader} fs
  * @returns {WebGLProgram | null}
@@ -60,6 +62,7 @@ function create_program(gl, vs, fs) {
 }
 
 /**
+ * @param {WebGLRenderingContext} gl
  * @param {Array<number> | Float32Array} data
  * @returns {WebGLBuffer | null}
  */
