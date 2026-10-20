@@ -96,10 +96,6 @@ if (gl === null) {
     throw new Error("gl");
 }
 
-gl.clearDepth(1.0);
-gl.clearColor(0.0, 0.0, 0.0, 1.0);
-gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
 /** @type {WebGLShader | null} */
 const vertex_shader = create_shader(gl, vertex_shader_source, "vertex");
 /** @type {WebGLShader | null} */
@@ -118,11 +114,43 @@ if (program === null) {
 
 gl.useProgram(program);
 
-/** @type {Array<string>} */
-const attributeNames = ["position", "color"];
 /** @type {Record<string, number>} */
-const attributeLocations = {};
+const attributeLocations = {
+    "position": gl.getAttribLocation(program, "position"),
+    "color": gl.getAttribLocation(program, "color"),
+};
+/** @type {Record<string, number>} */
+const attributeStrides = {
+    "position": 3,
+    "color": 4,
+};
 
-for (const name of attributeNames) {
-    attributeLocations[name] = gl.getAttribLocation(program, name);
+/** @type {Record<string, number>} */
+const uniformLocations = {
+    "matrix": gl.getUniformLocation(program, "matrix"),
+};
+
+/**
+ * @param {WebGLRenderingContext} gl
+ * @returns {void}
+ */
+function mainLoop(gl) {
+    gl.clearDepth(1.0);
+    gl.clearColor(0.0, 0.0, 0.0, 1.0);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+    /** @type {Float32Array} */
+    let mMatrix = Mat4.create();
+    let vMatrix = Mat4.create();
+    let pMatrix = Mat4.create();
+
+    const mvpMatrix = Mat4.create();
+
+    gl.uniformMatrix4fv(uniformLocations["matrix"], false, mvpMatrix);
+
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+
+    requestAnimationFrame(mainLoop);
 }
+
+mainLoop();
