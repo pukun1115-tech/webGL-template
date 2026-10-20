@@ -1,36 +1,13 @@
 import { vertex_shader_source, fragment_shader_source } from "./shader.js";
 import { Mat4 } from "./matrix.js";
-/**
- * @type {HTMLCanvasElement | null}
- */
-const canvas = document.getElementById("canvas");
-if (canvas === null) {
-    throw new Error("canvas");
-}
-canvas.width = 300;
-canvas.height = 300;
-
-/**
- * @type {WebGLRenderingContext | null}
- */
-const gl = canvas.getContext("webgl");
-if (gl === null) {
-    throw new Error("gl");
-}
-gl.clearDepth(1.0);
-gl.clearColor(0.0, 0.0, 0.0, 1.0);
-
-gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
 /**
  * @param {string} s
  * @param {string} type
  * @returns {WebGLShader | null}
  */
-function create_shader(s, type) {
-    /**
-     * @type {WebGLShader | null}
-     */
+function create_shader(gl, s, type) {
+    /** @type {WebGLShader | null} */
     let shader = null;
 
     if (type === "vertex") {
@@ -61,10 +38,8 @@ function create_shader(s, type) {
  * @param {WebGLShader} fs
  * @returns {WebGLProgram | null}
  */
-function create_program(vs, fs) {
-    /**
-     * @type {WebGLProgram | null}
-     */
+function create_program(gl, vs, fs) {
+    /** @type {WebGLProgram | null} */
     const program = gl.createProgram();
     if (program === null) {
         return null;
@@ -88,10 +63,8 @@ function create_program(vs, fs) {
  * @param {Array<number> | Float32Array} data
  * @returns {WebGLBuffer | null}
  */
-function create_vbo(data) {
-    /**
-     * @type {WebGLBuffer | null}
-     */
+function create_vbo(gl, data) {
+    /** @type {WebGLBuffer | null} */
     const vbo = gl.createBuffer();
     if (vbo === null) {
         return null;
@@ -102,4 +75,41 @@ function create_vbo(data) {
     gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
     return vbo;
+}
+
+/** @type {HTMLCanvasElement | null} */
+const canvas = document.getElementById("canvas");
+
+if (canvas === null) {
+    throw new Error("canvas");
+}
+
+canvas.width = 300;
+canvas.height = 300;
+
+/** @type {WebGLRenderingContext | null} */
+const gl = canvas.getContext("webgl");
+
+if (gl === null) {
+    throw new Error("gl");
+}
+
+gl.clearDepth(1.0);
+gl.clearColor(0.0, 0.0, 0.0, 1.0);
+gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+/** @type {WebGLShader | null} */
+const vertex_shader = create_shader(gl, vertex_shader_source, "vertex");
+/** @type {WebGLShader | null} */
+const fragment_shader = create_shader(gl, fragment_shader_source, "fragment");
+
+if (vertex_shader === null || fragment_shader === null) {
+    throw new Error("create_shader");
+}
+
+/** @type {WebGLProgram | null} */
+const program = create_program(gl, vertex_shader, fragment_shader);
+
+if (program === null) {
+    throw new Error("create_program");
 }
