@@ -1,7 +1,7 @@
 export class Mat4 {
     /**
      * @returns {Float32Array}
-     **/
+     */
     static create() {
         return new Float32Array([
             1, 0, 0, 0,
@@ -11,6 +11,14 @@ export class Mat4 {
         ]);
     }
 
+    /**
+     * @param {Float32Array} out
+     * @param {Float32Array} mat
+     * @param {number} x
+     * @param {number} y
+     * @param {number} z
+     * @returns {Float32Array}
+     */
     static translate(out, mat, x, y, z) {
         out[12] = mat[0] * x + mat[4] * y + mat[8] * z + mat[12];
         out[13] = mat[1] * x + mat[5] * y + mat[9] * z + mat[13];
@@ -20,6 +28,14 @@ export class Mat4 {
         return out;
     }
 
+    /**
+     * @param {Float32Array} out
+     * @param {Float32Array} mat
+     * @param {number} x
+     * @param {number} y
+     * @param {number} z
+     * @returns {Float32Array}
+     */
     static scale(out, mat, x, y, z) {
         out[0] = mat[0] * x;
         out[1] = mat[1] * x;
@@ -39,6 +55,11 @@ export class Mat4 {
         return out;
     }
 
+    /**
+     * @param {Float32Array} out
+     * @param {Float32Array} mat
+     * @param {number} rad
+     */
     static rotateZ(out, mat, rad) {
         const sin = Math.sin(rad);
         const cos = Math.cos(rad);
@@ -59,6 +80,11 @@ export class Mat4 {
         return out;
     }
 
+    /**
+     * @param {Float32Array} out
+     * @param {Float32Array} mat
+     * @param {number} rad
+     */
     static rotateX(out, mat, rad) {
         const sin = Math.sin(rad);
         const cos = Math.cos(rad);
@@ -79,6 +105,11 @@ export class Mat4 {
         return out;
     }
 
+    /**
+     * @param {Float32Array} out
+     * @param {Float32Array} mat
+     * @param {number} rad
+     */
     static rotateY(out, mat, rad) {
         const cos = Math.cos(rad);
         const sin = Math.sin(rad);
@@ -99,6 +130,12 @@ export class Mat4 {
         return out;
     }
 
+    /**
+     * @param {Float32Array} out
+     * @param {Float32Array} a
+     * @param {Float32Array} b
+     * @returns {Float32Array}
+     */
     static multiply(out, a, b) {
         out[0] = a[0] * b[0] + a[4] * b[1] + a[8] * b[2] + a[12] * b[3];
         out[1] = a[1] * b[0] + a[5] * b[1] + a[9] * b[2] + a[13] * b[3];
