@@ -144,6 +144,72 @@ export class Mat4 {
 
     /**
      * @param {Float32Array} out
+     * @param {Array<number> | Float32Array} eye
+     * @param {Array<number> | Float32Array} center
+     * @param {Array<number> | Float32Array} up
+     * @returns {Float32Array}
+     */
+    static lookAt(out, eye, center, up) {
+        const eyeX = eye[0];
+        const eyeY = eye[1];
+        const eyeZ = eye[2];
+
+        let zx = eyeX - center[0];
+        let zy = eyeY - center[1];
+        let zz = eyeZ - center[2];
+
+        let length = Math.hypot(zx, zy, zz);
+        if (length === 0) {
+            throw new Error("lookAt");
+        }
+
+        zx /= length;
+        zy /= length;
+        zz /= length;
+
+        let xx = up[1] * zz - up[2] * zy;
+        let xy = up[2] * zx - up[0] * zz;
+        let xz = up[0] * zy - up[1] * zx;
+
+        length = Math.hypot(xx, xy, xz);
+
+        if (length === 0) {
+            throw new Error("lookAt");
+        }
+
+        xx /= length;
+        xy /= length;
+        xz /= length;
+
+        const yx = zy * xz - zz * xy;
+        const yy = zz * xx - zx * xz;
+        const yz = zx * xy - zy * xx;
+
+        out[0] = xx;
+        out[1] = yx;
+        out[2] = zx;
+        out[3] = 0;
+
+        out[4] = xy;
+        out[5] = yy;
+        out[6] = zy;
+        out[7] = 0;
+
+        out[8] = xz;
+        out[9] = yz;
+        out[10] = zz;
+        out[11] = 0;
+
+        out[12] = -(xx * eyeX + xy * eyeY + xz * eyeZ);
+        out[13] = -(yx * eyeX + yy * eyeY + yz * eyeZ);
+        out[14] = -(zx * eyeX + zy * eyeY + zz * eyeZ);
+        out[15] = 1;
+
+        return out;
+    }
+
+    /**
+     * @param {Float32Array} out
      * @param {number} fovy
      * @param {number} aspect
      * @param {number} near
