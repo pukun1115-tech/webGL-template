@@ -79,6 +79,21 @@ function create_vbo(gl, data) {
     return vbo;
 }
 
+/**
+ * @param {WebGLRenderingContext} gl
+ * @param {Record<string, WebGLBuffer>} vbos
+ * @param {Record<string, number>} attLocation
+ * @param {Record<string, number>} attStride
+ * @returns {void}
+ */
+function set_attribute(gl, vbos, attLocation, attStride) {
+    for (const key of Object.keys(attLocation)) {
+        gl.bindBuffer(gl.ARRAY_BUFFER, vbos[key]);
+        gl.enableVertexAttribArray(attLocation[key]);
+        gl.vertexAttribPointer(attLocation[key], attStride[key], gl.FLOAT, false, 0, 0);
+    }
+}
+
 /** @type {HTMLCanvasElement | null} */
 const canvas = document.getElementById("canvas");
 
@@ -153,7 +168,18 @@ function mainLoop(gl) {
 
     gl.drawArrays(gl.TRIANGLES, 0, 3);
 
-    requestAnimationFrame(mainLoop);
+    requestAnimationFrame(() => mainLoop(gl));
 }
 
-mainLoop(gl);
+/**
+ * @param {WebGLRenderingContext} gl
+ * @returns {void}
+ */
+function init(gl) {
+    gl.enable(gl.DEPTH_TEST);
+    gl.enable(gl.CULL_FACE);
+    gl.frontFace(gl.CCW);
+    mainLoop(gl);
+}
+
+init(gl);
