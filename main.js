@@ -81,6 +81,25 @@ function create_vbo(gl, data) {
 
 /**
  * @param {WebGLRenderingContext} gl
+ * @param {Array<number> | Float32Array} data
+ * @returns {WebGLBuffer | null}
+ */
+function create_ibo(gl, data) {
+    /** @type {WebGLBuffer | null} */
+    const ibo = gl.createBuffer();
+    if (ibo === null) {
+        return null;
+    }
+
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Int16Array(data), gl.STATIC_DRAW);
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+
+    return ibo;
+}
+
+/**
+ * @param {WebGLRenderingContext} gl
  * @param {Record<string, WebGLBuffer>} vbos
  * @param {Record<string, number>} attLocation
  * @param {Record<string, number>} attStride
@@ -101,8 +120,16 @@ if (canvas === null) {
     throw new Error("canvas");
 }
 
-canvas.width = 300;
-canvas.height = 300;
+/**
+ * @param {WebGLRenderingContext} gl
+ * @returns {void}
+ */
+function resizeCanvas(gl) {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    gl.viewport(0, 0, canvas.width, canvas.height);
+}
 
 /** @type {WebGLRenderingContext | null} */
 const gl = canvas.getContext("webgl");
@@ -145,6 +172,8 @@ const uniformLocations = {
     "matrix": gl.getUniformLocation(program, "matrix"),
 };
 
+let frame = 0;
+
 /**
  * @param {WebGLRenderingContext} gl
  * @returns {void}
@@ -164,16 +193,22 @@ function mainLoop(gl) {
     /** @type {Float32Array} **/
     const mvpMatrix = Mat4.identity(Mat4.create());
 
-    Mat4.lookAt(vMatrix, [2.0, 0.0, 4.0], [0, 0, 0], [0, 1, 0]);
-    Mat4.perspective(pMatrix, 60 * Math.PI / 180, canvas.width / canvas.height, 0.1, 100);
+    Mat4.lookAt(vMatrix, [0.0, 0.5, 1.2], [0, 0, 0], [0, 1, 0]);
+    Mat4.perspective(pMatrix, 60 * Math.PI / 180, canvas.width / canvas.height, 0.01, 100);
+
+    //Mat4.rotateZ(mMatrix, mMatrix, (frame % 360) * Math.PI / 180);
+    //Mat4.rotateX(mMatrix, mMatrix, ((frame * 2) % 360) * Math.PI / 180);
+    Mat4.rotateY(mMatrix, mMatrix, (frame % 360) * Math.PI / 180);
+    //Mat4.translate(mMatrix, mMatrix, 1, 2, 0);
 
     Mat4.multiply(mvpMatrix, pMatrix, vMatrix);
     Mat4.multiply(mvpMatrix, mvpMatrix, mMatrix);
 
     gl.uniformMatrix4fv(uniformLocations["matrix"], false, mvpMatrix);
 
-    gl.drawArrays(gl.TRIANGLES, 0, 6);
+    gl.drawElements(gl.TRIANGLES, 12, gl.UNSIGNED_SHORT, 0);
 
+    frame++;
     requestAnimationFrame(() => mainLoop(gl));
 }
 
@@ -182,24 +217,47 @@ function mainLoop(gl) {
  * @returns {void}
  */
 function init(gl) {
+    window.addEventListener("resize", () => {
+        setTimeout(() => {
+            resizeCanvas(gl);
+        }, 10);
+    });
+    resizeCanvas(gl);
+
     gl.enable(gl.DEPTH_TEST);
-    gl.enable(gl.CULL_FACE);
+    //gl.enable(gl.CULL_FACE);
     gl.frontFace(gl.CCW);
+
+    const index = [
+        0, 1, 2,
+        0, 2, 3,
+        4, 5, 6,
+        4, 6, 7,
+    ];
+
+    const ibo = create_ibo(gl, index);
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo);
 
     const position = [
         0.0, 0.0, 0.0,
         1.0, 0.0, 0.0,
         1.0, 1.0, 0.0,
-        0.0, 0.0, 0.0,
-        1.0, 1.0, 0.0,
         0.0, 1.0, 0.0,
+
+        1.0, 0.0, 0.0,
+        1.0, 0.0, 1.0,
+        1.0, 1.0, 1.0,
+        1.0, 1.0, 0.0,
     ];
     const position_vbo = create_vbo(gl, position);
     const color = [
         1.0, 0.0, 0.0, 1.0,
         0.0, 1.0, 0.0, 1.0,
-        1.0, 1.0, 0.0, 1.0,
-        1.0, 0.0, 0.0, 1.0,
+        1.0, 1.0, 1.0, 1.0,
+        0.0, 0.0, 1.0, 1.0,
+
+        1.0, 0.0, 1.0, 1.0,
+        0.0, 1.0, 0.0, 1.0,
         1.0, 1.0, 0.0, 1.0,
         0.0, 0.0, 1.0, 1.0,
     ];

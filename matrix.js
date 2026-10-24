@@ -1,5 +1,15 @@
 export class Mat4 {
     /**
+     * @param {Float32Array} out
+     * @param {Float32Array} mat
+     * @returns {Float32Array}
+     */
+    static copy(out, mat) {
+        out.set(mat);
+        return out;
+    }
+
+    /**
      * @returns {Float32Array}
      */
     static create() {
@@ -16,10 +26,10 @@ export class Mat4 {
      * @returns {Float32Array}
      */
     static identity(mat) {
-        mat[0] = 1;mat[1] = 0;mat[2] = 0;mat[3] = 0;
-        mat[4] = 0;mat[5] = 1;mat[6] = 0;mat[7] = 0;
-        mat[8] = 0;mat[9] = 0;mat[10] = 1;mat[11] = 0;
-        mat[12] = 0;mat[13] = 0;mat[14] = 0;mat[15] = 1;
+        mat[0] = 1; mat[1] = 0; mat[2] = 0; mat[3] = 0;
+        mat[4] = 0; mat[5] = 1; mat[6] = 0; mat[7] = 0;
+        mat[8] = 0; mat[9] = 0; mat[10] = 1; mat[11] = 0;
+        mat[12] = 0; mat[13] = 0; mat[14] = 0; mat[15] = 1;
         return mat;
     }
 
@@ -244,11 +254,15 @@ export class Mat4 {
 
     /**
      * @param {Float32Array} out
-     * @param {Float32Array} a
-     * @param {Float32Array} b
+     * @param {Float32Array} x
+     * @param {Float32Array} y
      * @returns {Float32Array}
      */
-    static multiply(out, a, b) {
+    static multiply(out, x, y) {
+        const a = this.create();
+        const b = this.create();
+        Mat4.copy(a, x);
+        Mat4.copy(b, y);
         out[0] = a[0] * b[0] + a[4] * b[1] + a[8] * b[2] + a[12] * b[3];
         out[1] = a[1] * b[0] + a[5] * b[1] + a[9] * b[2] + a[13] * b[3];
         out[2] = a[2] * b[0] + a[6] * b[1] + a[10] * b[2] + a[14] * b[3];
@@ -268,7 +282,7 @@ export class Mat4 {
         out[13] = a[1] * b[12] + a[5] * b[13] + a[9] * b[14] + a[13] * b[15];
         out[14] = a[2] * b[12] + a[6] * b[13] + a[10] * b[14] + a[14] * b[15];
         out[15] = a[3] * b[12] + a[7] * b[13] + a[11] * b[14] + a[15] * b[15];
-        
+
         return out;
     }
 }
