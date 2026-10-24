@@ -164,9 +164,15 @@ function mainLoop(gl) {
     /** @type {Float32Array} **/
     const mvpMatrix = Mat4.identity(Mat4.create());
 
+    Mat4.lookAt(vMatrix, [2.0, 0.0, 4.0], [0, 0, 0], [0, 1, 0]);
+    Mat4.perspective(pMatrix, 60 * Math.PI / 180, canvas.width / canvas.height, 0.1, 100);
+
+    Mat4.multiply(mvpMatrix, pMatrix, vMatrix);
+    Mat4.multiply(mvpMatrix, mvpMatrix, mMatrix);
+
     gl.uniformMatrix4fv(uniformLocations["matrix"], false, mvpMatrix);
 
-    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    gl.drawArrays(gl.TRIANGLES, 0, 6);
 
     requestAnimationFrame(() => mainLoop(gl));
 }
@@ -179,6 +185,32 @@ function init(gl) {
     gl.enable(gl.DEPTH_TEST);
     gl.enable(gl.CULL_FACE);
     gl.frontFace(gl.CCW);
+
+    const position = [
+        0.0, 0.0, 0.0,
+        1.0, 0.0, 0.0,
+        1.0, 1.0, 0.0,
+        0.0, 0.0, 0.0,
+        1.0, 1.0, 0.0,
+        0.0, 1.0, 0.0,
+    ];
+    const position_vbo = create_vbo(gl, position);
+    const color = [
+        1.0, 0.0, 0.0, 1.0,
+        0.0, 1.0, 0.0, 1.0,
+        1.0, 1.0, 0.0, 1.0,
+        1.0, 0.0, 0.0, 1.0,
+        1.0, 1.0, 0.0, 1.0,
+        0.0, 0.0, 1.0, 1.0,
+    ];
+    const color_vbo = create_vbo(gl, color);
+
+    if (position_vbo === null || color_vbo === null) {
+        throw new Error("create_vbo");
+    }
+
+    set_attribute(gl, { "position": position_vbo, "color": color_vbo }, attributeLocations, attributeStrides);
+
     mainLoop(gl);
 }
 
