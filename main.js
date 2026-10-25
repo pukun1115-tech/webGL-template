@@ -207,7 +207,7 @@ function mainLoop(gl) {
 
     gl.uniformMatrix4fv(uniformLocations["matrix"], false, mvpMatrix);
 
-    gl.drawElements(gl.TRIANGLES, 12, gl.UNSIGNED_SHORT, 0);
+    gl.drawElements(gl.TRIANGLES, 36, gl.UNSIGNED_SHORT, 0);
 
     frame++;
     requestAnimationFrame(() => mainLoop(gl));
@@ -226,14 +226,22 @@ function init(gl) {
     resizeCanvas(gl);
 
     gl.enable(gl.DEPTH_TEST);
-    //gl.enable(gl.CULL_FACE);
+    gl.enable(gl.CULL_FACE);
     gl.frontFace(gl.CCW);
 
     const index = [
         0, 1, 2,
         0, 2, 3,
-        4, 5, 6,
-        4, 6, 7,
+        1, 5, 6,
+        1, 6, 2,
+        5, 4, 7,
+        5, 7, 6,
+        4, 0, 3,
+        4, 3, 7,
+        3, 2, 6,
+        3, 6, 7,
+        5, 1, 0,
+        5, 0, 4,
     ];
 
     const ibo = create_ibo(gl, index);
@@ -245,22 +253,22 @@ function init(gl) {
         1.0, 1.0, 0.0,
         0.0, 1.0, 0.0,
 
-        1.0, 0.0, 0.0,
+        0.0, 0.0, 1.0,
         1.0, 0.0, 1.0,
         1.0, 1.0, 1.0,
-        1.0, 1.0, 0.0,
+        0.0, 1.0, 1.0,
     ];
     const position_vbo = create_vbo(gl, position);
     const color = [
-        0.0, 1.0, 0.0, 1.0,
         1.0, 0.0, 0.0, 1.0,
-        0.0, 0.0, 1.0, 1.0,
+        0.0, 1.0, 0.0, 1.0,
         1.0, 1.0, 1.0, 1.0,
+        0.0, 0.0, 1.0, 1.0,
 
-        0.0, 1.0, 0.0, 1.0,
-        1.0, 0.0, 0.0, 1.0,
-        0.0, 0.0, 1.0, 1.0,
-        1.0, 1.0, 1.0, 1.0,
+        0.0, 0.0, 0.0, 1.0,
+        1.0, 1.0, 0.0, 1.0,
+        0.0, 1.0, 1.0, 1.0,
+        1.0, 0.0, 1.0, 1.0,
     ];
     const color_vbo = create_vbo(gl, color);
 
