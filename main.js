@@ -193,12 +193,13 @@ function mainLoop(gl) {
     /** @type {Float32Array} **/
     const mvpMatrix = Mat4.identity(Mat4.create());
 
-    Mat4.lookAt(vMatrix, [0.0, 0.5, 1.2], [0, 0, 0], [0, 1, 0]);
+    Mat4.lookAt(vMatrix, [0.0, 0.5, 2.0], [0, 0, 0], [0, 1, 0]);
     Mat4.perspective(pMatrix, 60 * Math.PI / 180, canvas.width / canvas.height, 0.01, 100);
 
     //Mat4.rotateZ(mMatrix, mMatrix, (frame % 360) * Math.PI / 180);
     //Mat4.rotateX(mMatrix, mMatrix, ((frame * 2) % 360) * Math.PI / 180);
     Mat4.rotateY(mMatrix, mMatrix, (frame % 360) * Math.PI / 180);
+    Mat4.rotateX(mMatrix, mMatrix, (frame % 360) * Math.PI / 180);
     //Mat4.translate(mMatrix, mMatrix, 1, 2, 0);
 
     Mat4.multiply(mvpMatrix, pMatrix, vMatrix);
@@ -251,15 +252,15 @@ function init(gl) {
     ];
     const position_vbo = create_vbo(gl, position);
     const color = [
+        0.0, 1.0, 0.0, 1.0,
         1.0, 0.0, 0.0, 1.0,
-        0.0, 1.0, 0.0, 1.0,
+        0.0, 0.0, 1.0, 1.0,
         1.0, 1.0, 1.0, 1.0,
-        0.0, 0.0, 1.0, 1.0,
 
-        1.0, 0.0, 1.0, 1.0,
         0.0, 1.0, 0.0, 1.0,
-        1.0, 1.0, 0.0, 1.0,
+        1.0, 0.0, 0.0, 1.0,
         0.0, 0.0, 1.0, 1.0,
+        1.0, 1.0, 1.0, 1.0,
     ];
     const color_vbo = create_vbo(gl, color);
 
