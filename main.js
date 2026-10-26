@@ -193,7 +193,7 @@ function mainLoop(gl) {
     /** @type {Float32Array} **/
     const mvpMatrix = Mat4.identity(Mat4.create());
 
-    Mat4.lookAt(vMatrix, [3.0, 3.0, 6.0], [0, 0, 0], [0, 1, 0]);
+    Mat4.lookAt(vMatrix, [1.0, 2.0, 3.0], [0, 0, 0], [0, 1, 0]);
     Mat4.perspective(pMatrix, 60 * Math.PI / 180, canvas.width / canvas.height, 0.01, 100);
 
     //Mat4.rotateZ(mMatrix, mMatrix, (frame % 360) * Math.PI / 180);
@@ -248,15 +248,15 @@ function init(gl) {
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo);
 
     const position = [
-        0.0, 0.0, 0.0,
-        1.0, 0.0, 0.0,
-        1.0, 1.0, 0.0,
-        0.0, 1.0, 0.0,
+        -0.5, -0.5, 0.5,
+        0.5, -0.5, 0.5,
+        0.5, 0.5, 0.5,
+        -0.5, 0.5, 0.5,
 
-        0.0, 0.0, -1.0,
-        1.0, 0.0, -1.0,
-        1.0, 1.0, -1.0,
-        0.0, 1.0, -1.0,
+        -0.5, -0.5, -0.5,
+        0.5, -0.5, -0.5,
+        0.5, 0.5, -0.5,
+        -0.5, 0.5, -0.5,
     ];
     const position_vbo = create_vbo(gl, position);
     const color = [
