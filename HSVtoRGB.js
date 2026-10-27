@@ -1,13 +1,14 @@
 /**
- * @param {Array<number> | Float32Array} hsv
+ * @param {Array<number> | Float32Array} hsva
  * @returns {Float32Array}
  */
-export function HSVtoRGB(hsv) {
-    const h = hsv[0];
-    const s = hsv[1];
-    const v = hsv[2];
+export function HSVAtoRGBA(hsva) {
+    const h = hsva[0];
+    const s = hsva[1];
+    const v = hsva[2];
+    const a = hsva[3];
 
-    const out = new Float32Array(3);
+    const out = new Float32Array(4);
 
     if (s === 0) {
         out[0] = v;
@@ -52,6 +53,7 @@ export function HSVtoRGB(hsv) {
     out[0] = Math.round(out[0] * 255);
     out[1] = Math.round(out[1] * 255);
     out[2] = Math.round(out[2] * 255);
+    out[3] = a;
 
     return out;
 }
