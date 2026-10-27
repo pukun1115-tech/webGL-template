@@ -194,13 +194,13 @@ function mainLoop(gl) {
     /** @type {Float32Array} **/
     const mvpMatrix = Mat4.identity(Mat4.create());
 
-    Mat4.lookAt(vMatrix, [1.0, 2.0, 3.0], [0, 0, 0], [0, 1, 0]);
+    Mat4.lookAt(vMatrix, [6.0, 8.0, 8.0], [0, 0, 0], [0, 1, 0]);
     Mat4.perspective(pMatrix, 60 * Math.PI / 180, canvas.width / canvas.height, 0.01, 100);
 
     //Mat4.rotateZ(mMatrix, mMatrix, (frame % 360) * Math.PI / 180);
     //Mat4.rotateX(mMatrix, mMatrix, ((frame * 2) % 360) * Math.PI / 180);
-    Mat4.rotateY(mMatrix, mMatrix, (frame % 360) * Math.PI / 180);
-    //Mat4.rotateX(mMatrix, mMatrix, (frame % 360) * Math.PI / 180);
+    //Mat4.rotateY(mMatrix, mMatrix, (frame % 360) * Math.PI / 180);
+    Mat4.rotateX(mMatrix, mMatrix, (frame % 360) * Math.PI / 180);
     //Mat4.translate(mMatrix, mMatrix, 1, 2, 0);
 
     Mat4.multiply(mvpMatrix, pMatrix, vMatrix);
@@ -229,7 +229,9 @@ function init(gl) {
     gl.enable(gl.DEPTH_TEST);
     gl.enable(gl.CULL_FACE);
     gl.frontFace(gl.CCW);
-
+    const t = torus(10, 10, 2, 4);
+    const index = t[2];
+    /*
     const index = [
         0, 1, 2,
         0, 2, 3,
@@ -244,10 +246,11 @@ function init(gl) {
         5, 1, 0,
         5, 0, 4,
     ];
-
+    */
     const ibo = create_ibo(gl, index);
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo);
-
+    const position = t[0];
+    /*
     const position = [
         -0.5, -0.5, 0.5,
         0.5, -0.5, 0.5,
@@ -259,7 +262,10 @@ function init(gl) {
         0.5, 0.5, -0.5,
         -0.5, 0.5, -0.5,
     ];
+    */
     const position_vbo = create_vbo(gl, position);
+    const color = t[1];
+    /*
     const color = [
         1.0, 0.0, 0.0, 1.0,
         0.0, 1.0, 0.0, 1.0,
@@ -271,6 +277,7 @@ function init(gl) {
         0.0, 1.0, 1.0, 1.0,
         1.0, 0.0, 1.0, 1.0,
     ];
+    */
     const color_vbo = create_vbo(gl, color);
 
     if (position_vbo === null || color_vbo === null) {
