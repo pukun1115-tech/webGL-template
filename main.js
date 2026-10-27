@@ -174,6 +174,7 @@ const uniformLocations = {
 };
 
 let frame = 0;
+let indexCount = 0;
 
 /**
  * @param {WebGLRenderingContext} gl
@@ -208,7 +209,7 @@ function mainLoop(gl) {
 
     gl.uniformMatrix4fv(uniformLocations["matrix"], false, mvpMatrix);
 
-    gl.drawElements(gl.TRIANGLES, 36, gl.UNSIGNED_SHORT, 0);
+    gl.drawElements(gl.TRIANGLES, indexCount, gl.UNSIGNED_SHORT, 0);
 
     frame++;
     requestAnimationFrame(() => mainLoop(gl));
@@ -247,6 +248,7 @@ function init(gl) {
         5, 0, 4,
     ];
     */
+    indexCount = index.length;
     const ibo = create_ibo(gl, index);
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo);
     const position = t[0];
