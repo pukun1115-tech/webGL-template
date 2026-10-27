@@ -1,5 +1,6 @@
 import { vertex_shader_source, fragment_shader_source } from "./shader.js";
 import { Mat4 } from "./matrix.js";
+import { torus } from "./torus.js";
 
 /**
  * @param {WebGLRenderingContext} gl
