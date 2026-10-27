@@ -29,14 +29,9 @@ export function torus(si, sj, r, R) {
 
             pos.push(x, y, z);
 
-            const col = HSVAtoRGBA([
-                (360 / sj) * j,
-                1,
-                1,
-                1
-            ]);
+            const col = HSVAtoRGBA([(360 / sj) * j, 1, 1, 1]);
 
-            color.push(col[0], col[1], col[2], col[3]);
+            color.push(col[0] / 255, col[1] / 255, col[2] / 255, col[3]);
         }
     }
 
