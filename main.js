@@ -230,7 +230,7 @@ function init(gl) {
     gl.enable(gl.DEPTH_TEST);
     gl.enable(gl.CULL_FACE);
     gl.frontFace(gl.CCW);
-    const t = torus(10, 10, 2, 4);
+    const t = torus(100, 100, 2, 4);
     const index = t[2];
     /*
     const index = [
